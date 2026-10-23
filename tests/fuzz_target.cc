@@ -72,5 +72,16 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
   RunBloaty(factory, "inlines");
   RunBloaty(factory, "armembers");
 
+  // Demangling variants: "symbols" with the default options demangles with
+  // the short (abseil) demangler; the explicit fullsymbols/shortsymbols data
+  // sources additionally drive bloaty.cc ItaniumDemangle's full path
+  // (llvm::itaniumDemangle / microsoftDemangle / rustDemangle / swift) over
+  // the symbol names in the file.
+  RunBloaty(factory, "fullsymbols");
+  RunBloaty(factory, "shortsymbols");
+
+  // Architecture slices of universal (fat) Mach-O binaries.
+  RunBloaty(factory, "archs");
+
   return 0;
 }
